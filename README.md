@@ -1,6 +1,6 @@
 # Sistem Pengelolaan Peminjaman Peralatan Laboratorium
 
-Aplikasi berbasis Python ini dikembangkan untuk mengelola proses pencatatan peminjaman peralatan oleh mahasiswa di lingkungan laboratorium universitas[cite: 1]. Sistem ini dibangun murni menggunakan pendekatan *Object-Oriented Programming* (OOP) dan memanfaatkan struktur data dinamis bawaan Python (seperti *List* dan *Dictionary*) sebagai media penyimpanan data selama program berjalan[cite: 1, 5].
+Aplikasi berbasis Python ini dikembangkan untuk mengelola proses pencatatan peminjaman peralatan oleh mahasiswa di lingkungan laboratorium universitas. Sistem ini dibangun murni menggunakan pendekatan *Object-Oriented Programming* (OOP) dan memanfaatkan struktur data dinamis bawaan Python (seperti *List* dan *Dictionary*) sebagai media penyimpanan data selama program berjalan.
 
 ## 👥 Anggota Kelompok
 
@@ -19,17 +19,17 @@ Proyek ini dikerjakan secara kolaboratif oleh 4 anggota dengan rincian peran seb
 
 Aplikasi ini menyediakan 11 fitur menu interaktif utama sesuai dengan spesifikasi kebutuhan proyek[cite: 4]:
 
-1. **Kelola data mahasiswa** (tambah, edit, hapus, cari)[cite: 4].
-2. **Kelola data alat** (tambah, edit, hapus, cari)[cite: 4].
-3. **Buat transaksi peminjaman** (mendukung peminjaman banyak alat sekaligus dalam satu transaksi)[cite: 3, 4].
-4. **Tampilkan seluruh transaksi** yang tercatat di sistem[cite: 4].
-5. **Proses pengembalian alat** (mendukung pembaruan kondisi alat dan pengembalian sebagian)[cite: 4].
-6. **Cari transaksi** berdasarkan NIM mahasiswa[cite: 4].
-7. **Tampilkan alat yang tersedia** (stok dalam kondisi baik dan siap dipinjam)[cite: 4].
-8. **Tampilkan alat yang sedang dipinjam** (melacak posisi alat)[cite: 4].
-9. **Tampilkan alat yang rusak** (daftar alat yang rusak ringan maupun rusak berat)[cite: 4].
-10. **Tampilkan riwayat peminjaman mahasiswa**[cite: 4].
-11. **Keluar dari program**[cite: 4].
+1. **Kelola data mahasiswa** (tambah, edit, hapus, cari).
+2. **Kelola data alat** (tambah, edit, hapus, cari).
+3. **Buat transaksi peminjaman** (mendukung peminjaman banyak alat sekaligus dalam satu transaksi).
+4. **Tampilkan seluruh transaksi** yang tercatat di sistem.
+5. **Proses pengembalian alat** (mendukung pembaruan kondisi alat dan pengembalian sebagian).
+6. **Cari transaksi** berdasarkan NIM mahasiswa.
+7. **Tampilkan alat yang tersedia** (stok dalam kondisi baik dan siap dipinjam).
+8. **Tampilkan alat yang sedang dipinjam** (melacak posisi alat).
+9. **Tampilkan alat yang rusak** (daftar alat yang rusak ringan maupun rusak berat).
+10. **Tampilkan riwayat peminjaman mahasiswa**.
+11. **Keluar dari program**.
 
 ---
 
@@ -38,26 +38,26 @@ Aplikasi ini menyediakan 11 fitur menu interaktif utama sesuai dengan spesifikas
 Pengembangan dilakukan menggunakan paradigma *Modular Programming*. Setiap anggota memegang tanggung jawab spesifik untuk mencegah *merge conflict* pada repository:
 
 ### 1. Aksya - *Student Data Manager*
-* **Modul:** Merancang Class `Mahasiswa` pada `mahasiswa.py` dan fungsi pengelolaannya di `sistem_lab.py`[cite: 2, 5].
+* **Modul:** Merancang Class `Mahasiswa` pada `mahasiswa.py` dan fungsi pengelolaannya di `sistem_lab.py`.
 * **Aturan Bisnis:** 
-  * Menerapkan validasi **Aturan 2** (Batas Peminjaman): Memastikan mahasiswa maksimal hanya memiliki 2 transaksi aktif[cite: 3].
-  * Menerapkan validasi **Aturan 6** (Penghapusan Data): Memblokir penghapusan mahasiswa jika masih memiliki transaksi aktif[cite: 4].
+  * Menerapkan validasi **Aturan 2** (Batas Peminjaman): Memastikan mahasiswa maksimal hanya memiliki 2 transaksi aktif.
+  * Menerapkan validasi **Aturan 6** (Penghapusan Data): Memblokir penghapusan mahasiswa jika masih memiliki transaksi aktif.
 
 ### 2. Keisha - *Equipment Data Manager*
-* **Modul:** Merancang Class `Peralatan` (mendukung kategori dinamis) pada `peralatan.py` dan fungsinya di `sistem_lab.py`[cite: 2, 5].
+* **Modul:** Merancang Class `Peralatan` (mendukung kategori dinamis) pada `peralatan.py` dan fungsinya di `sistem_lab.py`.
 * **Aturan Bisnis:**
-  * Menerapkan **Aturan 1** (Ketersediaan Alat): Menolak peminjaman jika alat tidak tersedia[cite: 3].
-  * Menerapkan **Aturan 5** (Kondisi Alat): Mengubah status ketersediaan (*unavailable*) secara otomatis jika alat dikembalikan dalam kondisi rusak ringan/berat[cite: 4].
+  * Menerapkan **Aturan 1** (Ketersediaan Alat): Menolak peminjaman jika alat tidak tersedia.
+  * Menerapkan **Aturan 5** (Kondisi Alat): Mengubah status ketersediaan (*unavailable*) secara otomatis jika alat dikembalikan dalam kondisi rusak ringan/berat.
 
 ### 3. Amel - *Transaction Controller*
-* **Modul:** Merancang Class `TransaksiPeminjaman` pada `transaksi.py` dan fungsi proses operasional di `sistem_lab.py`[cite: 2, 5].
+* **Modul:** Merancang Class `TransaksiPeminjaman` pada `transaksi.py` dan fungsi proses operasional di `sistem_lab.py`.
 * **Aturan Bisnis:**
-  * Menerapkan **Aturan 3** (Isi Transaksi): Memanfaatkan *List* agar satu transaksi bisa berisi banyak jenis alat[cite: 3, 4].
-  * Menerapkan **Aturan 4** (Pengembalian Sebagian): Membuat logika agar transaksi tetap berstatus "aktif" sampai seluruh alat dikembalikan[cite: 4].
+  * Menerapkan **Aturan 3** (Isi Transaksi): Memanfaatkan *List* agar satu transaksi bisa berisi banyak jenis alat.
+  * Menerapkan **Aturan 4** (Pengembalian Sebagian): Membuat logika agar transaksi tetap berstatus "aktif" sampai seluruh alat dikembalikan.
 
 ### 4. Danang - *System Integrator & UI Developer*
-* **Modul:** Merancang *Controller Utama* (`sistem_lab.py`) dan *Entry Point* antarmuka (`main.py`)[cite: 4, 5].
-* **Tanggung Jawab:** Merakit fungsi bawaan Aksya, Keisha, dan Amel menjadi *loop* CLI interaktif, mengelola penggabungan (*merge branch*) GitHub anggota[cite: 6], serta menyusun dokumentasi proyek ini[cite: 7].
+* **Modul:** Merancang *Controller Utama* (`sistem_lab.py`) dan *Entry Point* antarmuka (`main.py`).
+* **Tanggung Jawab:** Merakit fungsi bawaan Aksya, Keisha, dan Amel menjadi *loop* CLI interaktif, mengelola penggabungan (*merge branch*) GitHub anggota[cite: 6], serta menyusun dokumentasi proyek ini.
 
 ---
 
@@ -69,7 +69,7 @@ Pengembangan dilakukan menggunakan paradigma *Modular Programming*. Setiap anggo
  ┃ ┣ 📜 __init__.py           
  ┃ ┣ 📜 mahasiswa.py          # Modul entitas Mahasiswa (Aksya)
  ┃ ┣ 📜 peralatan.py          # Modul entitas Peralatan (Keisha)
- ┃ ┣ 📜 transaksi.py          # Modul entitas Transaksi (Amel)
+ ┃ ┣ 📜 transaksi.py          # Modul entitas Transaksi (Amelia)
  ┃ ┗ 📜 sistem_lab.py         # Modul Controller CRUD Utama (Dikerjakan bersama, digabung Danang)
  ┃
  ┣ 📂 dokumentasi/            # Folder artefak evaluasi
