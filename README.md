@@ -1,5 +1,16 @@
 # Praktikum-Pemrograman-Dasar-7---Peminjaman-alat-lab
 
+## 👥 Anggota Kelompok
+
+Proyek ini dikerjakan oleh kelompok yang beranggotakan 4 orang. Berikut adalah rincian kontribusi masing-masing anggota:
+
+| No | Nama Lengkap | NIM | Peran / Kontribusi Utama | Profil GitHub |
+|:---:|:---|:---:|:---|:---|
+| **1** | **[Aksya Nayla Fitriana]** | [K3525047] | Manajer Data Mahasiswa (Modul `mahasiswa.py`) | [@aksyanayla-cpu]       |
+| **2** | **[Sekar Hanny Keisha A]** | [K3525041] | Manajer Data Peralatan (Modul `peralatan.py`) | [@keskesiaw]            |
+| **3** | **[Amelia Pinasti N]**     | [K3525049] | Manajer Transaksi (Modul `transaksi.py`)      | [@ameliapinasti38-prog] |
+| **4** | **[Danang Rafli Juvianto]**| [K3525054] | Integrator Sistem, UI & Docs (Modul `main.py`)| [@dravian-std]          |
+
 ## 👥 Pembagian Kontribusi Anggota
 
 Proyek ini dikembangkan secara kolaboratif menggunakan pendekatan *Modular Programming* dan *Object-Oriented Programming* (OOP). Untuk mencegah terjadinya *merge conflict* pada repository, tugas dibagi secara spesifik per modul (file) sebagai berikut:
