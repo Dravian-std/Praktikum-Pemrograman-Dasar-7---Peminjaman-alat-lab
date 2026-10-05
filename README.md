@@ -59,12 +59,5 @@ Proyek ini menggunakan struktur modular agar mempermudah pengembangan secara kol
  ┃ ┣ 📜 transaksi.py          # Modul Class TransaksiPeminjaman (Amel)
  ┃ ┗ 📜 sistem_lab.py         # Modul Class SistemLaboratorium/Controller (Danang)
  ┃
- ┣ 📂 dokumentasi/            # Folder berisi artefak dokumen sesuai ketentuan
- ┃ ┣ 📜 UML_Final_Kelompok.pdf
- ┃ ┣ 📜 Dokumen_Keputusan_Desain.pdf
- ┃ ┣ 📜 Hasil_Pengujian.pdf
- ┃ ┣ 📜 Hasil_Code_Review.pdf
- ┃ ┗ 📜 Refleksi_dan_Perbaikan.pdf
- ┃
  ┣ 📜 main.py                 # Entry point aplikasi (Menu interaktif CLI)
  ┗ 📜 README.md               # Dokumentasi utama repository
