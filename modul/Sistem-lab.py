@@ -12,7 +12,37 @@ class SistemLaboratorium:
     # ==========================================
     # WILAYAH AKSYA (KELOLA MAHASISWA)
     # ==========================================
-    
+    def tambah_mahasiswa(self, nim, nama, no_hp):
+        if nim not in self.daftar_mahasiswa:
+            self.daftar_mahasiswa[nim] = Mahasiswa(nim, nama, no_hp)
+            print("Mahasiswa berhasil ditambahkan.")
+        else:
+            print("Gagal! NIM sudah terdaftar.")
+
+    def edit_mahasiswa(self, nim, nama_baru, no_hp_baru):
+        if nim in self.daftar_mahasiswa:
+            self.daftar_mahasiswa[nim].nama = nama_baru
+            self.daftar_mahasiswa[nim].no_hp = no_hp_baru
+            print("Data mahasiswa berhasil diperbarui.")
+        else:
+            print("Mahasiswa tidak ditemukan.")
+
+    def hapus_mahasiswa(self, nim):
+        if nim in self.daftar_mahasiswa:
+            if self.daftar_mahasiswa[nim].jumlah_transaksi_aktif > 0:
+                print("Gagal! Mahasiswa memiliki transaksi aktif.")
+            else:
+                del self.daftar_mahasiswa[nim]
+                print("Mahasiswa berhasil dihapus.")
+        else:
+            print("Mahasiswa tidak ditemukan.")
+
+    def cari_mahasiswa(self, nim):
+        if nim in self.daftar_mahasiswa:
+            mhs = self.daftar_mahasiswa[nim]
+            print(f"NIM: {mhs.nim} | Nama: {mhs.nama} | No HP: {mhs.no_hp} | Transaksi Aktif: {mhs.jumlah_transaksi_aktif}")
+        else:
+            print("Mahasiswa tidak ditemukan.")
 
     # ==========================================
     # WILAYAH KEISHA (KELOLA PERALATAN)
