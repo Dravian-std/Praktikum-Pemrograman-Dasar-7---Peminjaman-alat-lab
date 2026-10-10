@@ -1,63 +1,83 @@
-# Praktikum-Pemrograman-Dasar-7---Peminjaman-alat-lab
+# Sistem Pengelolaan Peminjaman Peralatan Laboratorium
+
+Aplikasi berbasis Python ini dikembangkan untuk mengelola proses pencatatan peminjaman peralatan oleh mahasiswa di lingkungan laboratorium universitas. Sistem ini dibangun murni menggunakan pendekatan *Object-Oriented Programming* (OOP) dan memanfaatkan struktur data dinamis bawaan Python (seperti *List* dan *Dictionary*) sebagai media penyimpanan data selama program berjalan.
 
 ## 👥 Anggota Kelompok
 
-Proyek ini dikerjakan oleh kelompok yang beranggotakan 4 orang. Berikut adalah rincian kontribusi masing-masing anggota:
+Proyek ini dikerjakan secara kolaboratif oleh 4 anggota dengan rincian peran sebagai berikut:
 
 | No | Nama Lengkap | NIM | Peran / Kontribusi Utama | Profil GitHub |
 |:---:|:---|:---:|:---|:---|
-| **1** | **[Aksya Nayla Fitriana]** | [K3525047] | Manajer Data Mahasiswa (Modul `mahasiswa.py`) | [@aksyanayla-cpu]       |
-| **2** | **[Sekar Hanny Keisha A]** | [K3525041] | Manajer Data Peralatan (Modul `peralatan.py`) | [@keskesiaw]            |
-| **3** | **[Amelia Pinasti N]**     | [K3525049] | Manajer Transaksi (Modul `transaksi.py`)      | [@ameliapinasti38-prog] |
-| **4** | **[Danang Rafli Juvianto]**| [K3525054] | Integrator Sistem, UI & Docs (Modul `main.py`)| [@dravian-std]          |
+| 1 | Aksya Nayla Fitriana | K3525047 | Manajer Data Mahasiswa (Modul `mahasiswa.py` & fungsi CRUD di `sistem_lab.py`) | [@aksyanayla-cpu](https://github.com/aksyanayla-cpu) |
+| 2 | Sekar Hanny Keisha A | K3525041 | Manajer Data Peralatan (Modul `peralatan.py` & fungsi inventaris di `sistem_lab.py`) | [@keskesiaw](https://github.com/keskesiaw) |
+| 3 | Amelia Pinasti N | K3525049 | Manajer Transaksi (Modul `transaksi.py` & fungsi operasional di `sistem_lab.py`) | [@ameliapinasti38-prog](https://github.com/ameliapinasti38-prog) |
+| 4 | Danang Rafli Juvianto | K3525054 | Integrator Sistem (Menggabungkan `sistem_lab.py` & UI CLI di `main.py`) | [@dravian-std](https://github.com/dravian-std) |
 
-## 👥 Pembagian Kontribusi Anggota
+---
 
-Proyek ini dikembangkan secara kolaboratif menggunakan pendekatan *Modular Programming* dan *Object-Oriented Programming* (OOP). Untuk mencegah terjadinya *merge conflict* pada repository, tugas dibagi secara spesifik per modul (file) sebagai berikut:
+## 🚀 Fitur Utama Program
 
-### 1. Aksya - *Student Data Manager* (`mahasiswa.py`)
-Bertanggung jawab atas pengelolaan entitas dan struktur data mahasiswa pengguna laboratorium.
-* **Implementasi Class:** Merancang Class `Mahasiswa` beserta enkapsulasi atributnya (NIM, Nama, No HP, Status Aktif Peminjaman).
-* **Fitur CRUD Mahasiswa:** Mengembangkan fungsi untuk menambah, mengedit, mencari, dan menghapus data mahasiswa.
-* **Implementasi Aturan Bisnis:** 
-  * Menerapkan validasi **Aturan 2** (Batas Peminjaman): Memastikan satu mahasiswa tidak dapat memiliki lebih dari dua transaksi peminjaman aktif.
-  * Menerapkan validasi **Aturan 6** (Penghapusan Data): Memblokir penghapusan data mahasiswa apabila masih terdapat transaksi yang belum diselesaikan (status aktif).
+Aplikasi ini menyediakan 11 fitur menu interaktif utama sesuai dengan spesifikasi kebutuhan proyek[cite: 4]:
 
-### 2. Keisha - *Equipment Data Manager* (`peralatan.py`)
-Bertanggung jawab atas inventarisasi alat laboratorium dan pemantauan kondisi barang.
-* **Implementasi Class:** Merancang Class `Peralatan` dengan atribut dinamis untuk mendukung penambahan kategori baru (kode, nama, kategori, kondisi, dan status ketersediaan).
-* **Fitur CRUD Peralatan:** Mengembangkan fungsi untuk menambah, mengedit, mencari, dan menghapus data peralatan laboratorium.
-* **Implementasi Aturan Bisnis:**
-  * Menerapkan validasi **Aturan 1** (Ketersediaan Alat): Memastikan alat yang sedang dipinjam atau rusak tidak dapat dipinjam kembali.
-  * Menerapkan logika **Aturan 5** (Kondisi Alat): Mengubah ketersediaan alat menjadi tidak tersedia (*unavailable*) secara otomatis apabila alat dikembalikan dalam kondisi "rusak ringan" atau "rusak berat".
+1. **Kelola data mahasiswa** (tambah, edit, hapus, cari).
+2. **Kelola data alat** (tambah, edit, hapus, cari).
+3. **Buat transaksi peminjaman** (mendukung peminjaman banyak alat sekaligus dalam satu transaksi).
+4. **Tampilkan seluruh transaksi** yang tercatat di sistem.
+5. **Proses pengembalian alat** (mendukung pembaruan kondisi alat dan pengembalian sebagian).
+6. **Cari transaksi** berdasarkan NIM mahasiswa.
+7. **Tampilkan alat yang tersedia** (stok dalam kondisi baik dan siap dipinjam).
+8. **Tampilkan alat yang sedang dipinjam** (melacak posisi alat).
+9. **Tampilkan alat yang rusak** (daftar alat yang rusak ringan maupun rusak berat).
+10. **Tampilkan riwayat peminjaman mahasiswa**.
+11. **Keluar dari program**.
 
-### 3. Amel - *Transaction Controller* (`transaksi.py`)
-Bertanggung jawab atas inti sistem operasional peminjaman dan pengembalian alat laboratorium.
-* **Implementasi Class:** Merancang Class `TransaksiPeminjaman` dan `Pengembalian`.
-* **Integrasi Entitas:** Menghubungkan objek dari Class `Mahasiswa` dengan objek dari Class `Peralatan` di dalam sebuah transaksi.
-* **Implementasi Aturan Bisnis:**
-  * Menerapkan **Aturan 3** (Isi Transaksi): Menggunakan struktur data *List* dinamis agar satu transaksi dapat menampung banyak alat sekaligus tanpa menggunakan variabel yang terpisah.
-  * Menerapkan **Aturan 4** (Pengembalian Sebagian): Membuat algoritma pengecekan di mana status transaksi tetap "aktif" atau "sebagian dikembalikan" sampai semua alat dalam id transaksi tersebut lunas dikembalikan.
+---
 
-### 4. Danang - *System Integrator & UI Developer* (`main.py` & `SistemLaboratorium.py`)
-Bertanggung jawab atas perakitan modul, struktur data utama, dan antarmuka pengguna di *command-line/terminal*[cite: 4].
-* **Implementasi Class Utama:** Merancang Class Controller `SistemLaboratorium` yang mengelola *Dictionary* dan *List* utama sistem (menggantikan fungsi database).
-* **Menu Interaktif:** Membangun antarmuka terminal (CLI) yang memuat minimal 11 menu utama proyek (Tampilkan alat tersedia, riwayat peminjaman, dll).
-* **Integrasi Sistem:** Memanggil dan merakit fungsi-fungsi yang telah dibuat oleh Aksya, Keisha, dan Amel menjadi satu alur aplikasi yang utuh dan bebas *bug*.
-* **DevOps & Dokumentasi:** Mengelola penyatuan (merge) *branch* GitHub dari seluruh anggota[cite: 6], serta menyusun struktur file dokumentasi teknis (`README.md`).
+## 🛠️ Pembagian Kontribusi & Aturan Bisnis
+
+Pengembangan dilakukan menggunakan paradigma *Modular Programming*. Setiap anggota memegang tanggung jawab spesifik untuk mencegah *merge conflict* pada repository:
+
+### 1. Aksya - *Student Data Manager*
+* **Modul:** Merancang Class `Mahasiswa` pada `mahasiswa.py` dan fungsi pengelolaannya di `sistem_lab.py`.
+* **Aturan Bisnis:** 
+  * Menerapkan validasi **Aturan 2** (Batas Peminjaman): Memastikan mahasiswa maksimal hanya memiliki 2 transaksi aktif.
+  * Menerapkan validasi **Aturan 6** (Penghapusan Data): Memblokir penghapusan mahasiswa jika masih memiliki transaksi aktif.
+
+### 2. Keisha - *Equipment Data Manager*
+* **Modul:** Merancang Class `Peralatan` (mendukung kategori dinamis) pada `peralatan.py` dan fungsinya di `sistem_lab.py`.
+* **Aturan Bisnis:**
+  * Menerapkan **Aturan 1** (Ketersediaan Alat): Menolak peminjaman jika alat tidak tersedia.
+  * Menerapkan **Aturan 5** (Kondisi Alat): Mengubah status ketersediaan (*unavailable*) secara otomatis jika alat dikembalikan dalam kondisi rusak ringan/berat.
+
+### 3. Amel - *Transaction Controller*
+* **Modul:** Merancang Class `TransaksiPeminjaman` pada `transaksi.py` dan fungsi proses operasional di `sistem_lab.py`.
+* **Aturan Bisnis:**
+  * Menerapkan **Aturan 3** (Isi Transaksi): Memanfaatkan *List* agar satu transaksi bisa berisi banyak jenis alat.
+  * Menerapkan **Aturan 4** (Pengembalian Sebagian): Membuat logika agar transaksi tetap berstatus "aktif" sampai seluruh alat dikembalikan.
+
+### 4. Danang - *System Integrator & UI Developer*
+* **Modul:** Merancang *Controller Utama* (`sistem_lab.py`) dan *Entry Point* antarmuka (`main.py`).
+* **Tanggung Jawab:** Merakit fungsi bawaan Aksya, Keisha, dan Amel menjadi *loop* CLI interaktif, mengelola penggabungan (*merge branch*) GitHub anggota[cite: 6], serta menyusun dokumentasi proyek ini.
+
+---
 
 ## 📂 Struktur Folder dan File Program
-
-Proyek ini menggunakan struktur modular agar mempermudah pengembangan secara kolaboratif dan mencegah *merge conflict*.
 
 ```text
 📦 sistem-peminjaman-lab
  ┣ 📂 modul/                  # Folder berisi class dan logika program utama
- ┃ ┣ 📜 __init__.py           # Penanda bahwa folder ini adalah package Python
- ┃ ┣ 📜 mahasiswa.py          # Modul Class Mahasiswa (Aksya)
- ┃ ┣ 📜 peralatan.py          # Modul Class Peralatan (Keisha)
- ┃ ┣ 📜 transaksi.py          # Modul Class TransaksiPeminjaman (Amel)
- ┃ ┗ 📜 sistem_lab.py         # Modul Class SistemLaboratorium/Controller (Danang)
+ ┃ ┣ 📜 __init__.py           
+ ┃ ┣ 📜 mahasiswa.py          # Modul entitas Mahasiswa (Aksya)
+ ┃ ┣ 📜 peralatan.py          # Modul entitas Peralatan (Keisha)
+ ┃ ┣ 📜 transaksi.py          # Modul entitas Transaksi (Amelia)
+ ┃ ┗ 📜 sistem_lab.py         # Modul Controller CRUD Utama (Dikerjakan bersama, digabung Danang)
  ┃
- ┣ 📜 main.py                 # Entry point aplikasi (Menu interaktif CLI)
- ┗ 📜 README.md               # Dokumentasi utama repository
+ ┣ 📂 dokumentasi/            # Folder artefak evaluasi
+ ┃ ┣ 📜 UML_Final_Kelompok.pdf
+ ┃ ┣ 📜 Dokumen_Keputusan_Desain.pdf
+ ┃ ┣ 📜 Hasil_Pengujian.pdf
+ ┃ ┣ 📜 Hasil_Code_Review.pdf
+ ┃ ┗ 📜 Refleksi_dan_Perbaikan.pdf
+ ┃
+ ┣ 📜 main.py                 # File utama untuk menjalankan aplikasi
+ ┗ 📜 README.md               # Dokumentasi repository
