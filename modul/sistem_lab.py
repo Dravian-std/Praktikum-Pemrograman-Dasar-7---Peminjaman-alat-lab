@@ -1,6 +1,7 @@
 from modul.Mahasiswa import Mahasiswa
 from modul.Peralatan import Peralatan
 from modul.Transaksi import TransaksiPeminjaman
+from datetime import datetime  # Tantangan D: untuk jam dan tanggal log
 
 class SistemLaboratorium:
     def __init__(self):
@@ -8,6 +9,21 @@ class SistemLaboratorium:
         self.daftar_peralatan = {}
         self.daftar_transaksi = []
         self.counter_trx = 1
+        self.log_aktivitas = []  # Tantangan D: list khusus penyimpan log
+
+    # ==========================================
+    # TANTANGAN D: LOG AKTIVITAS (Danang)
+    # ==========================================
+    def catat_log(self, pesan):
+        waktu = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.log_aktivitas.append(f"[{waktu}] {pesan}")
+
+    def tampilkan_log(self):
+        print("\n--- Riwayat Log Aktivitas ---")
+        if not self.log_aktivitas:
+            print("Belum ada log aktivitas.")
+        for log in self.log_aktivitas:
+            print(log)
 
     # ==========================================
     # WILAYAH AKSYA (KELOLA MAHASISWA)
@@ -16,6 +32,7 @@ class SistemLaboratorium:
         if nim not in self.daftar_mahasiswa:
             self.daftar_mahasiswa[nim] = Mahasiswa(nim, nama, no_hp)
             print("Mahasiswa berhasil ditambahkan.")
+            self.catat_log(f"Mahasiswa {nim} ({nama}) ditambahkan")
         else:
             print("Gagal! NIM sudah terdaftar.")
 
@@ -24,6 +41,7 @@ class SistemLaboratorium:
             self.daftar_mahasiswa[nim].nama = nama_baru
             self.daftar_mahasiswa[nim].no_hp = no_hp_baru
             print("Data mahasiswa berhasil diperbarui.")
+            self.catat_log(f"Data mahasiswa {nim} diperbarui")
         else:
             print("Mahasiswa tidak ditemukan.")
 
@@ -34,6 +52,7 @@ class SistemLaboratorium:
             else:
                 del self.daftar_mahasiswa[nim]
                 print("Mahasiswa berhasil dihapus.")
+                self.catat_log(f"Mahasiswa {nim} dihapus")
         else:
             print("Mahasiswa tidak ditemukan.")
 
@@ -50,6 +69,7 @@ class SistemLaboratorium:
         if kode not in self.daftar_peralatan:
             self.daftar_peralatan[kode] = Peralatan(kode, nama, kategori)
             print("Alat berhasil ditambahkan.")
+            self.catat_log(f"Alat {kode} ({nama}) ditambahkan")
         else:
             print("Gagal! Kode alat sudah terdaftar.")
 
@@ -58,6 +78,7 @@ class SistemLaboratorium:
             self.daftar_peralatan[kode].nama_alat = nama_baru
             self.daftar_peralatan[kode].kategori = kategori_baru
             print("Data alat berhasil diperbarui.")
+            self.catat_log(f"Data alat {kode} diperbarui")
         else:
             print("Alat tidak ditemukan.")
 
@@ -69,15 +90,28 @@ class SistemLaboratorium:
             else:
                 del self.daftar_peralatan[kode]
                 print("Alat berhasil dihapus.")
+                self.catat_log(f"Alat {kode} dihapus")
         else:
             print("Alat tidak ditemukan.")
 
-    def cari_alat(self, kode):
-        if kode in self.daftar_peralatan:
-            alat = self.daftar_peralatan[kode]
-            print(f"Kode: {alat.kode_alat} | Nama: {alat.nama_alat} | Kat: {alat.kategori} | Kondisi: {alat.kondisi} | Tersedia: {alat.status_tersedia}")
+    def cari_alat(self, keyword):
+        # Tantangan A: pencarian fleksibel (kode, sebagian nama, atau kategori)
+        keyword_lower = keyword.lower()
+        hasil_pencarian = []
+
+        for alat in self.daftar_peralatan.values():
+            # Cek kode, sebagian nama, atau kategori
+            if (keyword_lower in alat.kode_alat.lower() or
+                keyword_lower in alat.nama_alat.lower() or
+                keyword_lower in alat.kategori.lower()):
+                hasil_pencarian.append(alat)
+
+        if hasil_pencarian:
+            print(f"\n--- Hasil Pencarian '{keyword}' ---")
+            for alat in hasil_pencarian:
+                print(f"{alat.kode_alat} | {alat.nama_alat} | {alat.kategori} | Kondisi: {alat.kondisi}")
         else:
-            print("Alat tidak ditemukan.")
+            print(f"Tidak ditemukan alat dengan kata kunci '{keyword}'.")
 
     def tampilkan_alat_tersedia(self):
         print("--- Alat Tersedia ---")
@@ -143,6 +177,7 @@ class SistemLaboratorium:
 
         print(f"Transaksi {id_trx} berhasil dibuat untuk {mhs.nama}.")
         print(f"Batas pengembalian: {transaksi.batas_waktu}")
+        self.catat_log(f"Transaksi {id_trx} dibuat oleh {nim}, {len(alat_dipinjam)} alat dipinjam")
 
     def tampilkan_transaksi(self):
         print("--- Daftar Semua Transaksi ---")
@@ -169,6 +204,7 @@ class SistemLaboratorium:
 
         print(f"Alat {kode_alat} berhasil dikembalikan (kondisi: {kondisi_baru}).")
         print(f"Status transaksi: {trx.status_transaksi}")
+        self.catat_log(f"Alat {kode_alat} dikembalikan pada {trx.id_transaksi} (kondisi: {kondisi_baru}), status: {trx.status_transaksi}")
 
         from datetime import date
         if date.today() > trx.batas_waktu:
