@@ -96,3 +96,116 @@ class SistemLaboratorium:
     # ==========================================
     # WILAYAH AMEL (KELOLA TRANSAKSI)
     # ==========================================
+
+    def buat_transaksi(self, nim, daftar_kode):
+        # Validasi mahasiswa
+        if nim not in self.daftar_mahasiswa:
+            print("Gagal! Mahasiswa tidak ditemukan.")
+            return
+
+        mhs = self.daftar_mahasiswa[nim]
+
+        # Aturan 2: maksimal 2 transaksi aktif per mahasiswa
+        if not mhs.bisa_meminjam():
+            print("Gagal! Mahasiswa sudah memiliki 2 transaksi aktif.")
+            return
+
+        # Buang kode kosong/duplikat, urutan input tetap dijaga
+        kode_unik = []
+        for kode in daftar_kode:
+            if kode not in kode_unik:
+                kode_unik.append(kode)
+
+        if not kode_unik:
+            print("Gagal! Minimal pilih 1 alat.")
+            return
+
+        # Aturan 1: semua alat harus ada dan tersedia, kalau tidak transaksi dibatalkan
+        alat_dipinjam = []
+        for kode in kode_unik:
+            if kode not in self.daftar_peralatan:
+                print(f"Gagal! Alat {kode} tidak ditemukan. Transaksi dibatalkan.")
+                return
+            alat = self.daftar_peralatan[kode]
+            if not alat.status_tersedia:
+                print(f"Gagal! Alat {kode} ({alat.nama_alat}) tidak tersedia. Transaksi dibatalkan.")
+                return
+            alat_dipinjam.append(alat)
+
+        # Aturan 3: satu transaksi bisa berisi banyak alat (list)
+        id_trx = f"TRX{self.counter_trx:03d}"
+        self.counter_trx += 1
+        transaksi = TransaksiPeminjaman(id_trx, mhs, alat_dipinjam)
+        self.daftar_transaksi.append(transaksi)
+
+        for alat in alat_dipinjam:
+            alat.set_ketersediaan(False)
+        mhs.tambah_transaksi()
+
+        print(f"Transaksi {id_trx} berhasil dibuat untuk {mhs.nama}.")
+        print(f"Batas pengembalian: {transaksi.batas_waktu}")
+
+    def tampilkan_transaksi(self):
+        print("--- Daftar Semua Transaksi ---")
+        if not self.daftar_transaksi:
+            print("Belum ada transaksi.")
+            return
+        for trx in self.daftar_transaksi:
+            self._cetak_transaksi(trx)
+
+    def proses_pengembalian(self, id_transaksi, kode_alat, kondisi_baru):
+        trx = self._cari_transaksi(id_transaksi)
+        if trx is None:
+            print("Transaksi tidak ditemukan.")
+            return
+
+        if trx.status_transaksi == "selesai":
+            print("Transaksi ini sudah selesai, semua alat sudah dikembalikan.")
+            return
+
+        berhasil = trx.proses_pengembalian_alat(kode_alat, kondisi_baru)
+        if not berhasil:
+            print("Gagal! Alat tidak ada di transaksi ini atau sudah dikembalikan.")
+            return
+
+        print(f"Alat {kode_alat} berhasil dikembalikan (kondisi: {kondisi_baru}).")
+        print(f"Status transaksi: {trx.status_transaksi}")
+
+        from datetime import date
+        if date.today() > trx.batas_waktu:
+            print(f"Catatan: pengembalian melewati batas waktu ({trx.batas_waktu}).")
+
+    def riwayat_peminjaman(self, nim):
+        print(f"--- Riwayat Peminjaman NIM {nim} ---")
+        ditemukan = False
+        for trx in self.daftar_transaksi:
+            if trx.mahasiswa.nim == nim:
+                self._cetak_transaksi(trx)
+                ditemukan = True
+        if not ditemukan:
+            print("Tidak ada riwayat transaksi untuk NIM ini.")
+
+    def tampilkan_alat_dipinjam(self):
+        print("--- Alat Sedang Dipinjam ---")
+        ada = False
+        for trx in self.daftar_transaksi:
+            for alat in trx.daftar_alat_dipinjam:
+                if alat not in trx.daftar_alat_dikembalikan:
+                    print(f"{alat.kode_alat} | {alat.nama_alat} | Dipinjam oleh {trx.mahasiswa.nama} ({trx.id_transaksi})")
+                    ada = True
+        if not ada:
+            print("Tidak ada alat yang sedang dipinjam.")
+
+    # --- Fungsi bantu (internal) ---
+    def _cari_transaksi(self, id_transaksi):
+        for trx in self.daftar_transaksi:
+            if trx.id_transaksi.upper() == id_transaksi.strip().upper():
+                return trx
+        return None
+
+    def _cetak_transaksi(self, trx):
+        print(f"{trx.id_transaksi} | {trx.mahasiswa.nim} - {trx.mahasiswa.nama} | "
+              f"Pinjam: {trx.tgl_peminjaman} | Batas: {trx.batas_waktu} | Status: {trx.status_transaksi}")
+        for alat in trx.daftar_alat_dipinjam:
+            tanda = "sudah dikembalikan" if alat in trx.daftar_alat_dikembalikan else "belum dikembalikan"
+            print(f"    - {alat.kode_alat} {alat.nama_alat} ({tanda})")
