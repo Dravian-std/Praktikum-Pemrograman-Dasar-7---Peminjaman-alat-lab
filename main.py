@@ -21,9 +21,10 @@ def main():
         print("7. Tampilkan Alat Tersedia")
         print("8. Tampilkan Alat Sedang Dipinjam")
         print("9. Tampilkan Alat Rusak")
-        print("10. Keluar Program")
+        print("10. Tampilkan Log Aktivitas")
+        print("11. Keluar Program")
         
-        pilihan = input("Pilih menu (1-10): ")
+        pilihan = input("Pilih menu (1-11): ")
 
         if pilihan == "1":
             print("\n-- KELOLA MAHASISWA --")
@@ -43,15 +44,18 @@ def main():
             print("\n-- KELOLA PERALATAN --")
             print("1. Tambah | 2. Edit | 3. Hapus | 4. Cari")
             sub = input("Pilih aksi: ")
-            kode = input("Masukkan Kode Alat: ")
-            if sub == "1":
-                sistem.tambah_alat(kode, input("Nama Alat: "), input("Kategori: "))
-            elif sub == "2":
-                sistem.edit_alat(kode, input("Nama Baru: "), input("Kategori Baru: "))
-            elif sub == "3":
-                sistem.hapus_alat(kode)
-            elif sub == "4":
-                sistem.cari_alat(kode)
+            if sub == "4":
+                # Tantangan A: input bisa berupa kode, sebagian nama, atau kategori
+                keyword = input("Masukkan Kata Kunci (Kode/Sebagian Nama/Kategori): ")
+                sistem.cari_alat(keyword)
+            else:
+                kode = input("Masukkan Kode Alat: ")
+                if sub == "1":
+                    sistem.tambah_alat(kode, input("Nama Alat: "), input("Kategori: "))
+                elif sub == "2":
+                    sistem.edit_alat(kode, input("Nama Baru: "), input("Kategori Baru: "))
+                elif sub == "3":
+                    sistem.hapus_alat(kode)
 
         elif pilihan == "3":
             nim = input("NIM Peminjam: ")
@@ -86,10 +90,13 @@ def main():
             sistem.tampilkan_alat_rusak()
 
         elif pilihan == "10":
+            sistem.tampilkan_log()
+
+        elif pilihan == "11":
             print("Program dihentikan. Terima kasih!")
             break
         else:
             print("Pilihan tidak valid.")
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     main()
