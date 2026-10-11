@@ -4,11 +4,11 @@ class TransaksiPeminjaman:
     def __init__(self, id_transaksi, mahasiswa, daftar_alat):
         self.id_transaksi = id_transaksi
         self.mahasiswa = mahasiswa
-        self.daftar_alat_dipinjam = daftar_alat  # List dinamis (Aturan 3)[cite: 2, 3, 4]
+        self.daftar_alat_dipinjam = daftar_alat  # List dinamis
         self.daftar_alat_dikembalikan = []
         self.tgl_peminjaman = date.today()
-        self.batas_waktu = self.tgl_peminjaman + timedelta(days=7)  # Maks 7 hari[cite: 2]
-        self.status_transaksi = "dipinjam"  # dipinjam / sebagian dikembalikan / selesai[cite: 3]
+        self.batas_waktu = self.tgl_peminjaman + timedelta(days=7)  # Maks 7 Hari
+        self.status_transaksi = "dipinjam"  # dipinjam / sebagian dikembalikan 
 
     def proses_pengembalian_alat(self, kode_alat, kondisi_baru):
         alat_ditemukan = None
