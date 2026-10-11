@@ -25,6 +25,26 @@ class SistemLaboratorium:
         for log in self.log_aktivitas:
             print(log)
 
+    # TANTANGAN A: Pencarian Fleksibel (Keisha) ---
+    # (Ganti fungsi cari_alat yang lama dengan ini)
+    def cari_alat(self, keyword):
+        keyword_lower = keyword.lower()
+        hasil_pencarian = []
+        
+        for alat in self.daftar_peralatan.values():
+            # Cek kode, sebagian nama, atau kategori
+            if (keyword_lower in alat.kode_alat.lower() or 
+                keyword_lower in alat.nama_alat.lower() or 
+                keyword_lower in alat.kategori.lower()):
+                hasil_pencarian.append(alat)
+                
+        if hasil_pencarian:
+            print(f"\n--- Hasil Pencarian '{keyword}' ---")
+            for alat in hasil_pencarian:
+                print(f"{alat.kode_alat} | {alat.nama_alat} | {alat.kategori} | Kondisi: {alat.kondisi}")
+        else:
+            print(f"Tidak ditemukan alat dengan kata kunci '{keyword}'.")
+
     # ==========================================
     # WILAYAH AKSYA (KELOLA MAHASISWA)
     # ==========================================
