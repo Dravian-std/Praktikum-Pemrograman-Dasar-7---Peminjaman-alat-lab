@@ -91,7 +91,6 @@ class SistemLaboratorium:
             if alat.kondisi in ["rusak ringan", "rusak berat"]:
                 print(f"{alat.kode_alat} | {alat.nama_alat} | Kondisi: {alat.kondisi}")
     # ==========================================
-    
 
     # ==========================================
     # WILAYAH AMEL (KELOLA TRANSAKSI)
