@@ -3,7 +3,7 @@ class Mahasiswa:
         self.nim = nim
         self.nama = nama
         self.no_hp = no_hp
-        self.jumlah_transaksi_aktif = 0  # Aturan 2: Melacak batas transaksi[cite: 2, 3]
+        self.jumlah_transaksi_aktif = 0 
 
     def tambah_transaksi(self):
         self.jumlah_transaksi_aktif += 1
@@ -13,5 +13,4 @@ class Mahasiswa:
             self.jumlah_transaksi_aktif -= 1
 
     def bisa_meminjam(self):
-        # Aturan 2: Maksimal 2 transaksi aktif[cite: 3]
         return self.jumlah_transaksi_aktif < 2
