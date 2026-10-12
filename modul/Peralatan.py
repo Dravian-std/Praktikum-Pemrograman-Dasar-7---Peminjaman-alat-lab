@@ -4,7 +4,7 @@ class Peralatan:
         self.nama_alat = nama_alat
         self.kategori = kategori
         self.kondisi = "baik" 
-        self.status_tersedia = True  # True jika bisa dipinjam[cite: 2, 3]
+        self.status_tersedia = True  # True jika bisa dipinjam
 
     def update_kondisi(self, kondisi_baru):
         self.kondisi = kondisi_baru.lower()
