@@ -2,6 +2,13 @@
 
 Aplikasi berbasis Python ini dikembangkan untuk mengelola proses pencatatan peminjaman peralatan oleh mahasiswa di lingkungan laboratorium universitas. Sistem ini dibangun murni menggunakan pendekatan *Object-Oriented Programming* (OOP) dan memanfaatkan struktur data dinamis bawaan Python (seperti *List* dan *Dictionary*) sebagai media penyimpanan data selama program berjalan.
 
+🌟 Tantangan Pengembangan yang Diselesaikan
+Selain fitur wajib dasar, sistem ini juga telah mengimplementasikan dua tantangan pengembangan tambahan untuk memaksimalkan fungsionalitas program:
+
+Tantangan A (Pencarian Fleksibel): Fitur pencarian alat telah ditingkatkan. Pengguna kini dapat mencari alat dengan lebih fleksibel hanya menggunakan satu input kata kunci, yang akan otomatis mencocokkan hasil berdasarkan kode, sebagian nama alat, maupun kategori.
+
+Tantangan D (Log Activities): Sistem telah dilengkapi dengan pencatat riwayat aktivitas (Log). Setiap aksi penting (penambahan data, pembuatan transaksi, pengembalian alat) akan direkam secara diam-diam ke dalam sebuah List lengkap beserta tanggal dan waktu (timestamp) kejadiannya secara real-time.
+
 ## 👥 Anggota Kelompok
 
 Proyek ini dikerjakan secara kolaboratif oleh 4 anggota dengan rincian peran sebagai berikut:
