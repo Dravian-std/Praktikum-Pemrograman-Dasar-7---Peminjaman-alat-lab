@@ -16,9 +16,9 @@ Proyek ini dikerjakan secara kolaboratif oleh 4 anggota dengan rincian peran seb
 | No | Nama Lengkap | NIM | Peran / Kontribusi Utama | Profil GitHub |
 |:---:|:---|:---:|:---|:---|
 | 1 | Aksya Nayla Fitriana | K3525047 | Manajer Data Mahasiswa (Modul `Mahasiswa.py` & fungsi CRUD di `sistem_lab.py`) | [@aksyanayla-cpu](https://github.com/aksyanayla-cpu) |
-| 2 | Sekar Hanny Keisha A | K3525041 | Manajer Data Peralatan (Modul `Peralatan.py` & fungsi inventaris di `sistem_lab.py`) | [@keskesiaw](https://github.com/keskesiaw) |
+| 2 | Sekar Hanny Keisha A | K3525041 | Manajer Data Peralatan & Pengembang Tantangan A (Modul `Peralatan.py` & pencarian fleksibel di `sistem_lab.py`) | [@keskesiaw](https://github.com/keskesiaw) |
 | 3 | Amelia Pinasti N | K3525049 | Manajer Transaksi (Modul `Transaksi.py` & fungsi operasional di `sistem_lab.py`) | [@ameliapinasti38-prog](https://github.com/ameliapinasti38-prog) |
-| 4 | Danang Rafli Juvianto | K3525054 | Integrator Sistem (Menggabungkan `sistem_lab.py` & UI CLI di `main.py`) | [@dravian-std](https://github.com/dravian-std) |
+| 4 | Danang Rafli Juvianto | K3525054 | Integrator Sistem & Pengembang Tantangan D (Menggabungkan `sistem_lab.py` & UI CLI di `main.py` dan arsitektur Log Aktivitas) | [@dravian-std](https://github.com/dravian-std) |
 
 ---
 
@@ -35,7 +35,8 @@ Aplikasi ini menyediakan 10 menu interaktif pada antarmuka *command line* (CLI):
 7. **Tampilkan alat yang tersedia** (stok dalam kondisi baik dan siap dipinjam).
 8. **Tampilkan alat yang sedang dipinjam** (melacak posisi alat).
 9. **Tampilkan alat yang rusak** (daftar alat yang rusak ringan maupun rusak berat).
-10. **Keluar dari program**.
+10. **Tampilkan Log Aktivitas** (Melihat riwayat operasional sistem lengkap dengan waktu).
+11. **Keluar dari program**.
 
 ---
 
@@ -60,22 +61,25 @@ Pengembangan dilakukan menggunakan paradigma *Modular Programming*. Setiap anggo
 * **Aturan Bisnis:**
   * Menerapkan validasi **Aturan 2** (Batas Peminjaman): Memastikan mahasiswa maksimal hanya memiliki 2 transaksi aktif.
   * Menerapkan validasi **Aturan 6** (Penghapusan Data): Memblokir penghapusan mahasiswa jika masih memiliki transaksi aktif.
+  * Integrasi Log: Menyisipkan fungsi pencatat log pada setiap aksi pengelolaan mahasiswa.
 
 ### 2. Keisha - *Equipment Data Manager*
 * **Modul:** Merancang Class `Peralatan` (mendukung kategori dinamis) pada `Peralatan.py` dan fungsinya di `sistem_lab.py`.
 * **Aturan Bisnis:**
   * Menerapkan **Aturan 1** (Ketersediaan Alat): Menolak peminjaman jika alat tidak tersedia.
   * Menerapkan **Aturan 5** (Kondisi Alat): Mengubah status ketersediaan (*unavailable*) secara otomatis jika alat dikembalikan dalam kondisi rusak ringan/berat.
+  * Tantangan A: Mengembangkan fungsi cari_alat agar kebal huruf besar/kecil dan fleksibel mendeteksi sebagian nama, kategori, atau kode.
 
 ### 3. Amel - *Transaction Controller*
 * **Modul:** Merancang Class `TransaksiPeminjaman` pada `Transaksi.py` dan fungsi proses operasional di `sistem_lab.py`.
 * **Aturan Bisnis:**
   * Menerapkan **Aturan 3** (Isi Transaksi): Memanfaatkan *List* agar satu transaksi bisa berisi banyak jenis alat.
   * Menerapkan **Aturan 4** (Pengembalian Sebagian): Status transaksi menjadi `sebagian dikembalikan` selama masih ada alat yang belum kembali, dan menjadi `selesai` setelah seluruh alat dikembalikan.
+  * Integrasi Log: Menyisipkan pencatat log otomatis pada pembuatan transaksi dan pengembalian barang.
 
 ### 4. Danang - *System Integrator & UI Developer*
 * **Modul:** Merancang *Controller Utama* (`sistem_lab.py`) dan *Entry Point* antarmuka (`main.py`).
-* **Tanggung Jawab:** Merakit fungsi bawaan Aksya, Keisha, dan Amel menjadi *loop* CLI interaktif, mengelola penggabungan (*merge branch*) GitHub anggota, serta menyusun dokumentasi proyek ini.
+* **Tanggung Jawab:** Merakit fungsi bawaan Aksya, Keisha, dan Amel menjadi *loop* CLI interaktif, mengelola penggabungan (*merge branch*) GitHub anggota, serta menyusun dokumentasi proyek ini. Tantangan D: Membangun arsitektur penampung log aktivitas menggunakan struktur data List beserta fungsi modul waktunya (datetime).
 
 ---
 
