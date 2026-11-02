@@ -85,6 +85,7 @@ class SistemLaboratorium:
 
     # ==========================================
     # WILAYAH KEISHA (KELOLA PERALATAN)
+    # ==========================================
     def tambah_alat(self, kode, nama, kategori):
         if kode not in self.daftar_peralatan:
             self.daftar_peralatan[kode] = Peralatan(kode, nama, kategori)
@@ -144,7 +145,7 @@ class SistemLaboratorium:
         for alat in self.daftar_peralatan.values():
             if alat.kondisi in ["rusak ringan", "rusak berat"]:
                 print(f"{alat.kode_alat} | {alat.nama_alat} | Kondisi: {alat.kondisi}")
-    # ==========================================
+    
 
     # ==========================================
     # WILAYAH AMEL (KELOLA TRANSAKSI)
