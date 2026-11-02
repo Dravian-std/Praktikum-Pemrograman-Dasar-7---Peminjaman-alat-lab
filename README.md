@@ -1,13 +1,22 @@
-# Sistem Pengelolaan Peminjaman Peralatan Laboratorium
+# Sistem Pengelolaan Peminjaman Peralatan Laboratorium (Proyek 2 - File Persistence)
 
-Aplikasi berbasis Python ini dikembangkan untuk mengelola proses pencatatan peminjaman peralatan oleh mahasiswa di lingkungan laboratorium universitas. Sistem ini dibangun murni menggunakan pendekatan *Object-Oriented Programming* (OOP) dan memanfaatkan struktur data dinamis bawaan Python (seperti *List* dan *Dictionary*) sebagai media penyimpanan data selama program berjalan.
+Aplikasi berbasis Python ini dikembangkan untuk mengelola proses pencatatan peminjaman peralatan oleh mahasiswa di lingkungan laboratorium universitas. Pada Proyek 2 ini, sistem telah ditingkatkan menggunakan pendekatan **Object-Oriented Programming (OOP)** yang terintegrasi dengan **File Handling / File Persistence (`.csv` dan `.txt`)**, sehingga seluruh data tersimpan secara permanen dan tidak hilang saat program ditutup.
 
-# 🌟 Tantangan Pengembangan yang Diselesaikan
-Selain fitur wajib dasar, sistem ini juga telah mengimplementasikan dua tantangan pengembangan tambahan untuk memaksimalkan fungsionalitas program:
+## 🌟 Fitur Utama & Pembaharuan Proyek 2
 
-**Tantangan A (Pencarian Fleksibel)**: Fitur pencarian alat telah ditingkatkan. Pengguna kini dapat mencari alat dengan lebih fleksibel hanya menggunakan satu input kata kunci, yang akan otomatis mencocokkan hasil berdasarkan kode, sebagian nama alat, maupun kategori.
+1. **File Persistence (Penyimpanan Permanen)**:
 
-**Tantangan D (Log Activities)**: Sistem telah dilengkapi dengan pencatat riwayat aktivitas (Log). Setiap aksi penting (penambahan data, pembuatan transaksi, pengembalian alat) akan direkam secara diam-diam ke dalam sebuah List lengkap beserta tanggal dan waktu (timestamp) kejadiannya secara real-time.
+  * Data otomatis dimuat (*read*) saat program dibuka dan disimpan (*write*) secara otomatis setiap ada manipulasi data serta saat keluar dari program.
+  * **`mahasiswa.csv`**: Menyimpan data identitas mahasiswa dan jumlah transaksi aktif.
+  * **`peralatan.csv`**: Menyimpan data ketersediaan, kategori, dan kondisi peralatan lab.
+  * **`transaksi.csv`**: Menyimpan riwayat peminjaman dan status pengembalian barang.
+  * **`log_aktivitas.txt`**: Menyimpan riwayat aktivitas sistem beserta *timestamp*.
+2. **Tantangan A (Pencarian Fleksibel)**:
+
+  * Fitur pencarian alat serbaguna yang dapat mencocokkan kata kunci berdasarkan kode alat, sebagian nama alat, maupun kategori secara *case-insensitive*.
+3. **Tantangan D (Log Activities)**:
+
+  * Seluruh transaksi, penambahan/perubahan data, dan pengembalian dicatat secara *real-time* lengkap dengan jam dan tanggal, lalu tersimpan ke dalam file `log_aktivitas.txt`.
 
 ## 👥 Anggota Kelompok
 
@@ -15,71 +24,53 @@ Proyek ini dikerjakan secara kolaboratif oleh 4 anggota dengan rincian peran seb
 
 | No | Nama Lengkap | NIM | Peran / Kontribusi Utama | Profil GitHub |
 |:---:|:---|:---:|:---|:---|
-| 1 | Aksya Nayla Fitriana | K3525047 | Manajer Data Mahasiswa (Modul `Mahasiswa.py` & fungsi CRUD di `sistem_lab.py`) | [@aksyanayla-cpu](https://github.com/aksyanayla-cpu) |
-| 2 | Sekar Hanny Keisha A | K3525041 | Manajer Data Peralatan & Pengembang Tantangan A (Modul `Peralatan.py` & pencarian fleksibel di `sistem_lab.py`) | [@keskesiaw](https://github.com/keskesiaw) |
-| 3 | Amelia Pinasti N | K3525049 | Manajer Transaksi (Modul `Transaksi.py` & fungsi operasional di `sistem_lab.py`) | [@ameliapinasti38-prog](https://github.com/ameliapinasti38-prog) |
-| 4 | Danang Rafli Juvianto | K3525054 | Integrator Sistem & Pengembang Tantangan D (Menggabungkan `sistem_lab.py` & UI CLI di `main.py` dan arsitektur Log Aktivitas) | [@dravian-std](https://github.com/dravian-std) |
+| 1 | Aksya Nayla Fitriana | K3525047 | Manajer Data Mahasiswa (Modul `Mahasiswa.py` & fungsi CRUD/Persistence Mahasiswa di `sistem_lab.py`) | [@aksyanayla-cpu](https://github.com/aksyanayla-cpu) |
+| 2 | Sekar Hanny Keisha A | K3525041 | Manajer Data Peralatan & Pengembang Tantangan A (Modul `Peralatan.py` & CRUD/Persistence pencarian fleksibel di `sistem_lab.py`) | [@keskesiaw](https://github.com/keskesiaw) |
+| 3 | Amelia Pinasti N | K3525049 | Manajer Transaksi (Modul `Transaksi.py` & fungsi operasional/Persistence Transaksi di `sistem_lab.py`) | [@ameliapinasti38-prog](https://github.com/ameliapinasti38-prog) |
+| 4 | Danang Rafli Juvianto | K3525054 | Integrator Sistem, File Handing & Pengembang Tantangan D (`main.py`, `modul/__init__.py`, `simpan_data`/`muat_data` &amp; Log Aktivitas di `sistem_lab.py`) | [@dravian-std](https://github.com/dravian-std) |
 
 ---
 
-## 🚀 Fitur Utama Program
+## 🚀 Menu Program (CLI Interface)
 
-Aplikasi ini menyediakan 10 menu interaktif pada antarmuka *command line* (CLI):
+Aplikasi menyediakan 11 pilihan menu pada antarmuka *Command Line Interface*:
 
-1. **Kelola data mahasiswa** (tambah, edit, hapus, cari).
-2. **Kelola data alat** (tambah, edit, hapus, cari).
-3. **Buat transaksi peminjaman** (mendukung peminjaman banyak alat sekaligus dalam satu transaksi).
-4. **Tampilkan seluruh transaksi** yang tercatat di sistem.
-5. **Proses pengembalian alat** (mendukung pembaruan kondisi alat dan pengembalian sebagian).
-6. **Cari riwayat transaksi mahasiswa** berdasarkan NIM.
-7. **Tampilkan alat yang tersedia** (stok dalam kondisi baik dan siap dipinjam).
-8. **Tampilkan alat yang sedang dipinjam** (melacak posisi alat).
-9. **Tampilkan alat yang rusak** (daftar alat yang rusak ringan maupun rusak berat).
-10. **Tampilkan Log Aktivitas** (Melihat riwayat operasional sistem lengkap dengan waktu).
-11. **Keluar dari program**.
+1. **Kelola Mahasiswa**: Tambah, Edit, Hapus, dan Cari data mahasiswa.
+2. **Kelola Peralatan**: Tambah, Edit, Hapus, dan Cari alat (Pencarian Fleksibel).
+3. **Buat Transaksi Peminjaman**: Peminjaman banyak alat sekaligus per transaksi.
+4. **Tampilkan Semua Transaksi**: Menampilkan seluruh status transaksi yang tercatat.
+5. **Proses Pengembalian Alat**: Mengembalikan alat per item beserta pembaruan kondisi alat.
+6. **Cari Riwayat Transaksi Mahasiswa**: Menampilkan riwayat peminjaman berdasarkan NIM.
+7. **Tampilkan Alat Tersedia**: Menampilkan stok alat yang siap dipinjam.
+8. **Tampilkan Alat Sedang Dipinjam**: Melacak peralatan yang masih di tangan peminjam.
+9. **Tampilkan Alat Rusak**: Menampilkan daftar alat kondisi rusak ringan/berat.
+10. **Tampilkan Log Aktivitas**: Melihat riwayat aktivitas sistem secara *real-time*.
+11. **Keluar Program**: Menyimpan seluruh data ke file fisik dan menghentikan aplikasi.
 
 ---
 
-## ▶️ Cara Menjalankan
+## ▶️ Cara Menjalankan Aplikasi
 
-Pastikan Python 3 sudah terpasang, lalu jalankan dari folder utama repository:
+1. Pastikan Python 3 sudah terpasang di komputer Anda.
+2. Buka terminal / command prompt pada direktori utama proyek.
+3. Jalankan perintah berikut:
 
-```bash
+```
 python main.py
+
 ```
 
-Program menyertakan data contoh awal (2 mahasiswa dan 3 alat) agar mudah dicoba. Data hanya disimpan selama program berjalan dan akan hilang saat program ditutup.
-
+&gt; **Catatan Pembacaan Data**: Pada saat pertama kali dijalankan (jika berkas `.csv` belum ada), sistem akan membuatkan data contoh awal (*dummy data*) secara otomatis dan membentuk berkas `mahasiswa.csv`, `peralatan.csv`, `transaksi.csv`, serta `log_aktivitas.txt`. Pada penggunaan selanjutnya, sistem akan membaca data lama secara otomatis dari berkas-berkas tersebut.
 ---
 
-## 🛠️ Pembagian Kontribusi & Aturan Bisnis
+## 🛠️ Aturan Bisnis Sistem
 
-Pengembangan dilakukan menggunakan paradigma *Modular Programming*. Setiap anggota memegang tanggung jawab spesifik untuk mencegah *merge conflict* pada repository:
-
-### 1. Aksya - *Student Data Manager*
-* **Modul:** Merancang Class `Mahasiswa` pada `Mahasiswa.py` dan fungsi pengelolaannya di `sistem_lab.py`.
-* **Aturan Bisnis:**
-  * Menerapkan validasi **Aturan 2** (Batas Peminjaman): Memastikan mahasiswa maksimal hanya memiliki 2 transaksi aktif.
-  * Menerapkan validasi **Aturan 6** (Penghapusan Data): Memblokir penghapusan mahasiswa jika masih memiliki transaksi aktif.
-  * Integrasi Log: Menyisipkan fungsi pencatat log pada setiap aksi pengelolaan mahasiswa.
-
-### 2. Keisha - *Equipment Data Manager*
-* **Modul:** Merancang Class `Peralatan` (mendukung kategori dinamis) pada `Peralatan.py` dan fungsinya di `sistem_lab.py`.
-* **Aturan Bisnis:**
-  * Menerapkan **Aturan 1** (Ketersediaan Alat): Menolak peminjaman jika alat tidak tersedia.
-  * Menerapkan **Aturan 5** (Kondisi Alat): Mengubah status ketersediaan (*unavailable*) secara otomatis jika alat dikembalikan dalam kondisi rusak ringan/berat.
-  * Tantangan A: Mengembangkan fungsi cari_alat agar kebal huruf besar/kecil dan fleksibel mendeteksi sebagian nama, kategori, atau kode.
-
-### 3. Amel - *Transaction Controller*
-* **Modul:** Merancang Class `TransaksiPeminjaman` pada `Transaksi.py` dan fungsi proses operasional di `sistem_lab.py`.
-* **Aturan Bisnis:**
-  * Menerapkan **Aturan 3** (Isi Transaksi): Memanfaatkan *List* agar satu transaksi bisa berisi banyak jenis alat.
-  * Menerapkan **Aturan 4** (Pengembalian Sebagian): Status transaksi menjadi `sebagian dikembalikan` selama masih ada alat yang belum kembali, dan menjadi `selesai` setelah seluruh alat dikembalikan.
-  * Integrasi Log: Menyisipkan pencatat log otomatis pada pembuatan transaksi dan pengembalian barang.
-
-### 4. Danang - *System Integrator & UI Developer*
-* **Modul:** Merancang *Controller Utama* (`sistem_lab.py`) dan *Entry Point* antarmuka (`main.py`).
-* **Tanggung Jawab:** Merakit fungsi bawaan Aksya, Keisha, dan Amel menjadi *loop* CLI interaktif, mengelola penggabungan (*merge branch*) GitHub anggota, serta menyusun dokumentasi proyek ini. Tantangan D: Membangun arsitektur penampung log aktivitas menggunakan struktur data List beserta fungsi modul waktunya (datetime).
+* **Aturan 1 (Ketersediaan Alat)**: Peminjaman dibatalkan jika ada alat yang tidak ditemukan atau sedang tidak tersedia.
+* **Aturan 2 (Batas Transaksi)**: Setiap mahasiswa maksimal hanya boleh memiliki 2 transaksi peminjaman aktif.
+* **Aturan 3 (Kapasitas Transaksi)**: Satu transaksi peminjaman dapat memuat lebih dari satu jenis alat.
+* **Aturan 4 (Pengembalian Sebagian)**: Status transaksi otomatis berubah menjadi `sebagian dikembalikan` hingga seluruh alat dalam transaksi tersebut dikembalikan secara lengkap (`selesai`).
+* **Aturan 5 (Kondisi Alat Rusak)**: Jika alat dikembalikan dalam kondisi `rusak ringan` atau `rusak berat`, status ketersediaan alat otomatis diubah menjadi tidak tersedia (`False`).
+* **Aturan 6 (Validasi Hapus Data)**: Mahasiswa atau alat yang sedang terikat transaksi aktif tidak dapat dihapus dari sistem.
 
 ---
 
@@ -92,7 +83,12 @@ Pengembangan dilakukan menggunakan paradigma *Modular Programming*. Setiap anggo
  ┃ ┣ 📜 Mahasiswa.py          # Modul entitas Mahasiswa (Aksya)
  ┃ ┣ 📜 Peralatan.py          # Modul entitas Peralatan (Keisha)
  ┃ ┣ 📜 Transaksi.py          # Modul entitas Transaksi (Amel)
- ┃ ┗ 📜 sistem_lab.py         # Modul Controller Utama (dikerjakan bersama, digabung Danang)
+ ┃ ┗ 📜 sistem_lab.py         # Controller Utama, Logic & File Handling (dikerjakan bersama, digabung Danang)
+ ┃
+ ┣ 📜 mahasiswa.csv           # File data permanen Mahasiswa
+ ┣ 📜 peralatan.csv           # File data permanen Peralatan
+ ┣ 📜 transaksi.csv           # File data permanen Transaksi Peminjaman
+ ┣ 📜 log\_aktivitas.txt      # File log riwayat aktivitas sistem
  ┃
  ┣ 📂 folder.dokumentasi/     # Folder artefak evaluasi
  ┃ ┣ 📜 uml final kelompok.pdf
