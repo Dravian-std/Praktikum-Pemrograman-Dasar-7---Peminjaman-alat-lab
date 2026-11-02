@@ -60,7 +60,6 @@ python main.py
 
 ```
 
-&gt; **Catatan Pembacaan Data**: Pada saat pertama kali dijalankan (jika berkas `.csv` belum ada), sistem akan membuatkan data contoh awal (*dummy data*) secara otomatis dan membentuk berkas `mahasiswa.csv`, `peralatan.csv`, `transaksi.csv`, serta `log_aktivitas.txt`. Pada penggunaan selanjutnya, sistem akan membaca data lama secara otomatis dari berkas-berkas tersebut.
 ---
 
 ## 🛠️ Aturan Bisnis Sistem
