@@ -1,7 +1,9 @@
+import os
+import csv
 from modul.Mahasiswa import Mahasiswa
 from modul.Peralatan import Peralatan
 from modul.Transaksi import TransaksiPeminjaman
-from datetime import datetime  # Tantangan D: untuk jam dan tanggal log
+from datetime import datetime, date  # Tantangan D: untuk jam dan tanggal log
 
 class SistemLaboratorium:
     def __init__(self):
@@ -11,12 +13,113 @@ class SistemLaboratorium:
         self.counter_trx = 1
         self.log_aktivitas = []  # Tantangan D: list khusus penyimpan log
 
+        # --- PENYIMPANAN TETAP (file persistence): file disimpan di folder utama proyek ---
+        folder = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        self.file_mahasiswa = os.path.join(folder, "mahasiswa.csv")
+        self.file_peralatan = os.path.join(folder, "peralatan.csv")
+        self.file_transaksi = os.path.join(folder, "transaksi.csv")
+        self.file_log = os.path.join(folder, "log_aktivitas.txt")
+        self.boleh_simpan = True
+        self.muat_data()  # data lama dibaca dari file saat program mulai
+
+    # ==========================================
+    # PENYIMPANAN TETAP / FILE PERSISTENCE (Danang)
+    # ==========================================
+    def simpan_data(self):
+        if not self.boleh_simpan:
+            print("Peringatan: data tidak disimpan karena file gagal dibaca saat program dimulai.")
+            return
+
+        with open(self.file_mahasiswa, mode="w", newline="", encoding="utf-8") as f:
+            penulis = csv.writer(f)
+            penulis.writerow(["nim", "nama", "no_hp", "jumlah_transaksi_aktif"])
+            for mhs in self.daftar_mahasiswa.values():
+                penulis.writerow([mhs.nim, mhs.nama, mhs.no_hp, mhs.jumlah_transaksi_aktif])
+
+        with open(self.file_peralatan, mode="w", newline="", encoding="utf-8") as f:
+            penulis = csv.writer(f)
+            penulis.writerow(["kode_alat", "nama_alat", "kategori", "kondisi", "status_tersedia"])
+            for alat in self.daftar_peralatan.values():
+                penulis.writerow([alat.kode_alat, alat.nama_alat, alat.kategori, alat.kondisi, alat.status_tersedia])
+
+        with open(self.file_transaksi, mode="w", newline="", encoding="utf-8") as f:
+            penulis = csv.writer(f)
+            penulis.writerow(["id_transaksi", "nim_peminjam", "kode_alat_dipinjam",
+                              "kode_alat_dikembalikan", "tgl_peminjaman", "batas_waktu", "status_transaksi"])
+            for trx in self.daftar_transaksi:
+                dipinjam = ";".join([alat.kode_alat for alat in trx.daftar_alat_dipinjam])
+                dikembalikan = ";".join([alat.kode_alat for alat in trx.daftar_alat_dikembalikan])
+                penulis.writerow([trx.id_transaksi, trx.mahasiswa.nim, dipinjam, dikembalikan,
+                                  trx.tgl_peminjaman, trx.batas_waktu, trx.status_transaksi])
+
+        with open(self.file_log, mode="w", encoding="utf-8") as f:
+            for log in self.log_aktivitas:
+                f.write(log + "\n")
+
+    def muat_data(self):
+        try:
+            if os.path.exists(self.file_mahasiswa):
+                with open(self.file_mahasiswa, mode="r", newline="", encoding="utf-8") as f:
+                    for baris in csv.DictReader(f):
+                        mhs = Mahasiswa(baris["nim"], baris["nama"], baris["no_hp"])
+                        mhs.jumlah_transaksi_aktif = int(baris["jumlah_transaksi_aktif"])
+                        self.daftar_mahasiswa[mhs.nim] = mhs
+
+            if os.path.exists(self.file_peralatan):
+                with open(self.file_peralatan, mode="r", newline="", encoding="utf-8") as f:
+                    for baris in csv.DictReader(f):
+                        alat = Peralatan(baris["kode_alat"], baris["nama_alat"], baris["kategori"])
+                        alat.kondisi = baris["kondisi"]
+                        alat.status_tersedia = (baris["status_tersedia"] == "True")
+                        self.daftar_peralatan[alat.kode_alat] = alat
+
+            if os.path.exists(self.file_transaksi):
+                with open(self.file_transaksi, mode="r", newline="", encoding="utf-8") as f:
+                    nomor_terbesar = 0
+                    for baris in csv.DictReader(f):
+                        # Mahasiswa/alat yang sudah dihapus diganti objek kosong supaya riwayat tidak hilang
+                        mhs = self.daftar_mahasiswa.get(baris["nim_peminjam"])
+                        if mhs is None:
+                            mhs = Mahasiswa(baris["nim_peminjam"], "(data dihapus)", "-")
+
+                        alat_transaksi = {}
+                        alat_dipinjam = []
+                        for kode in baris["kode_alat_dipinjam"].split(";"):
+                            if kode == "":
+                                continue
+                            alat = self.daftar_peralatan.get(kode)
+                            if alat is None:
+                                alat = Peralatan(kode, "(data dihapus)", "-")
+                            alat_transaksi[kode] = alat
+                            alat_dipinjam.append(alat)
+                        alat_dikembalikan = [alat_transaksi[k] for k in baris["kode_alat_dikembalikan"].split(";")
+                                             if k in alat_transaksi]
+
+                        trx = TransaksiPeminjaman(baris["id_transaksi"], mhs, alat_dipinjam)
+                        trx.daftar_alat_dikembalikan = alat_dikembalikan
+                        trx.tgl_peminjaman = date.fromisoformat(baris["tgl_peminjaman"])
+                        trx.batas_waktu = date.fromisoformat(baris["batas_waktu"])
+                        trx.status_transaksi = baris["status_transaksi"]
+                        self.daftar_transaksi.append(trx)
+
+                        nomor_terbesar = max(nomor_terbesar, int(baris["id_transaksi"].replace("TRX", "")))
+                    self.counter_trx = nomor_terbesar + 1
+
+            if os.path.exists(self.file_log):
+                with open(self.file_log, mode="r", encoding="utf-8") as f:
+                    self.log_aktivitas = [baris.strip() for baris in f if baris.strip()]
+        except Exception as e:
+            # Kalau file gagal dibaca, jangan menimpa file lama dengan data setengah jadi
+            self.boleh_simpan = False
+            print(f"Gagal membaca file data: {e}")
+
     # ==========================================
     # TANTANGAN D: LOG AKTIVITAS (Danang)
     # ==========================================
     def catat_log(self, pesan):
         waktu = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.log_aktivitas.append(f"[{waktu}] {pesan}")
+        self.simpan_data()  # setiap ada perubahan data langsung disimpan ke file
 
     def tampilkan_log(self):
         print("\n--- Riwayat Log Aktivitas ---")
