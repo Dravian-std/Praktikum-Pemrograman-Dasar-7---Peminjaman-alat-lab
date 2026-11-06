@@ -3,12 +3,13 @@ from modul.sistem_lab import SistemLaboratorium
 def main():
     sistem = SistemLaboratorium()
     
-    # Data Dummy Awal agar mudah dites
-    sistem.tambah_mahasiswa("M01", "Budi", "0811")
-    sistem.tambah_mahasiswa("M02", "Siti", "0822")
-    sistem.tambah_alat("A01", "Kamera DSLR", "Multimedia")
-    sistem.tambah_alat("A02", "Tripod", "Multimedia")
-    sistem.tambah_alat("A03", "Kabel LAN", "Jaringan")
+    # Data Dummy Awal hanya ditambahkan kalau belum ada data tersimpan di file
+    if not sistem.daftar_mahasiswa and not sistem.daftar_peralatan:
+        sistem.tambah_mahasiswa("M01", "Budi", "0811")
+        sistem.tambah_mahasiswa("M02", "Siti", "0822")
+        sistem.tambah_alat("A01", "Kamera DSLR", "Multimedia")
+        sistem.tambah_alat("A02", "Tripod", "Multimedia")
+        sistem.tambah_alat("A03", "Kabel LAN", "Jaringan")
 
     while True:
         print("\n=== SISTEM LABORATORIUM ===")
@@ -93,7 +94,8 @@ def main():
             sistem.tampilkan_log()
 
         elif pilihan == "11":
-            print("Program dihentikan. Terima kasih!")
+            sistem.simpan_data()
+            print("Data tersimpan. Program dihentikan. Terima kasih!")
             break
         else:
             print("Pilihan tidak valid.")
